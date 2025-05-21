@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Costura Criativa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Botão para alternar modo claro/escuro -->
+<button class="toggle-mode" onclick="toggleDarkMode()"> Modo Escuro</button>
+
+<!-- Cabeçalho -->
+<header>
+  <h1>Costura Criativa</h1>
+  <p>Dicas, tutoriais e projetos para quem ama costurar!</p>
+</header>
+
+<!-- Barra de Navegação -->
+<nav>
+  <a href="#">Início</a>
+  <a href="#">Projetos</a>
+  <a href="#">Dicas de Costura</a>
+  <a href="#">Contato</a>
+</nav>
+
+<main>
+  <!-- Barra lateral com informações pessoais -->
+  <aside>
+    <h2>Sobre Mim</h2>
+    <h5>Foto:</h5>
+    <div class="fakeimg" style="height:200px;">Imagem</div>
+    <p>Sou apaixonada por costura há mais de 10 anos. Aqui compartilho minhas experiências e criações.</p>
+    <h3>Ferramentas Favoritas</h3>
+    <ul>
+      <li>Máquina de costura doméstica</li>
+      <li>Linhas coloridas</li>
+      <li>Tecidos estampados</li>
+    </ul>
+  </aside>
+
+  <!-- Conteúdo principal -->
+  <section>
+    <article>
+      <h2>Como Fazer uma Bolsa Simples</h2>
+      <h5>Publicado em 7 de dezembro de 2024</h5>
+      <div class="fakeimg" style="height:200px;">Imagem do projeto</div>
+      <p>Aprenda o passo a passo para criar uma bolsa linda e funcional usando tecido de algodão.</p>
+    </article>
+    <br>
+    <article>
+      <h2>Dica: Costura Reta Perfeita</h2>
+      <h5>Publicado em 2 de setembro de 2024</h5>
+      <img src="costura.jpg" alt="Costura">
+      <p>Veja como manter a costtura alinhada com truques simples e eficazes para iniciantes.</p>
+    </article>
+  </section>
+</main>
+
+<!-- Rodapé -->
+<footer>
+  <p>&copy; 2025 Costura Criativa. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Script para alternar modo escuro -->
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+  }
+</script>
+
+</body>
+</html>
