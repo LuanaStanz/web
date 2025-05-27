@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quetão 1</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: rgb(145, 132, 116);
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+            color: white;
+        }
+
+        section {
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+        }
+        nav {
+            width: 30%;
+            padding: 20px;
+            background: #e0b4b4;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        article {
+            width: 70%;
+            padding: 20px;
+            background-color: #f1f1f1;
+        }
+
+        footer {
+            background-color: #777;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+        .fakeimg {
+            background-color: #f31b1b;
+            width: 300px;
+            height: 200px;
+            padding: 20px;
+            margin: 0 auto 20px auto;
+        }
+        @media screen and (max-width: 400px) {
+            section {
+            flex-direction: column;
+            }
+            nav, article {
+            width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="header">Desenvolvimento de Software WEB</h1>
+    </header>
+    <section>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#">Link 1</a></li>
+                <li><a href="#">Link 2</a></li>
+                <li><a href="#">Link 3</a></li>
+                <li><a href="#">Link 4</a></li>
+            </ul>
+        </nav>
+        <article>
+            <h1>Introdução ao HTML</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi veniam perspiciatis recusandae placeat expedita, blanditiis inventore error quibusdam architecto quo cum cupiditate ratione suscipit incidunt aliquam. Aliquam ratione minus nam.</p>
+            <div class="fakeimg">Here's an image [Imagem.png]</div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, exercitationem expedita quibusdam rem reiciendis voluptates ea? Quae, temporibus repudiandae quos, officia nostrum sit esse quam, inventore eius velit quaerat sed!</p>
+            <div class="fakeimg">Here's another image [Imagem.png]</div>
+        </article>
+    </section>
+    <footer>
+        <p>fulanodetal@ufc.br </p>
+        <p> 2025.1 </p>
+        <p> Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>

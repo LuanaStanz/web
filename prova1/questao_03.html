@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>questao 3</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        img {
+            width: 70%;
+            margin: 0 auto;
+        }
+        button {
+            width: 20%;
+            height: 10%;
+        }
+    </style>
+</head>
+<body>
+    <img id="pokemon" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg">
+    <button onclick="voltar()">Voltar -1</button>
+    <button onclick="avancar()">Avançar +1</button>
+
+    <script>
+        let numero = 1; // Inicializa o número do pokemon
+        
+        function voltar() {
+            if (numero > 1) {
+                numero--;
+                atualizarImagem();
+            }
+        }
+
+        function avancar() {
+            numero++;
+            atualizarImagem();
+        }
+
+        function atualizarImagem() {
+            const img = document.getElementById("pokemon"); //acessar  a <img> via id
+            img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${numero}.svg`;
+        }
+        function verificarNumero() {
+            if (numero < 1 || numero > 898) { // Considerando que existem 898 Pokémon na Pokédex
+                alert("Número invalido, valor do número voltou para o 1!");
+                numero = 1;
+            }
+        }
+    </script>
+</body>
+</html>
