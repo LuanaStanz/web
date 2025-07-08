@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Produtos</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+    .acima-media { background-color: #ffeeba; }
+    .caro { background-color: #f5c6cb; font-weight: bold; }
+    .barato { background-color: #bee5eb; font-weight: bold; }
+    .erro { color: red; font-weight: bold; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Lista de Produtos</h1>
+    <div id="resultado">Carregando produtos...</div>
+  </main>
+
+  <script>
+    function pegarLista(){
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const numeroAleatorio = Math.floor(Math.random() * 100);
+
+          if (numeroAleatorio % 2 === 0) {
+            const lista = Array.from({ length: 10 }, (_, i) => ({
+              id: i + 1,
+              nome: `Produto ${i + 1}`,
+              tipo: i % 2 === 0 ? 'Eletrônico' : 'Brinquedo',
+              preco: parseFloat((Math.random() * 100 + 50).toFixed(2))
+            }));
+            resolve(lista);
+          } else {
+            reject({ RES: "ERROR", MSG: "ERRO NO SISTEMA" });
+          }
+        }, 4000);
+      });
+    }
+
+    async function carregarProdutos(){
+      try {
+        const produtos = await pegarLista();
+        criarTabelaHTML(produtos);
+      } catch (erro) {
+        document.getElementById("resultado").innerHTML = `<p class="erro">${erro.MSG}</p>`;
+      }
+    }
+
+    function criarTabelaHTML(produtos){
+      const media = calcMedia(produtos);
+      const maisCaro = prodMaisCaro(produtos);
+      const maisBarato = prodMaisBarato(produtos);
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Nome</th><th>Tipo</th><th>Preço (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      produtos.forEach(p =>{
+        let classe = "";
+        if (p.preco > media) classe = "acima-media";
+        if (p.id === maisCaro.id) classe = "caro";
+        if (p.id === maisBarato.id) classe = "barato";
+
+        html += `
+          <tr class="${classe}">
+            <td>${p.id}</td>
+            <td>${p.nome}</td>
+            <td>${p.tipo}</td>
+            <td>${p.preco.toFixed(2)}</td>
+          </tr>`;
+      });
+
+      html += `
+          </tbody>
+        </table>
+        <p><strong>Média:</strong> R$ ${media.toFixed(2)}</p>
+        <p><strong>Mais caro:</strong> ${maisCaro.nome} (R$ ${maisCaro.preco.toFixed(2)})</p>
+        <p><strong>Mais barato:</strong> ${maisBarato.nome} (R$ ${maisBarato.preco.toFixed(2)})</p>
+      `;
+
+      document.getElementById("resultado").innerHTML = html;
+    }
+
+    function calcMedia(produtos) {
+      const total = produtos.reduce((acc, p) => acc + p.preco, 0);
+      return total / produtos.length;
+    }
+
+    function prodMaisCaro(produtos) {
+      return produtos.reduce((a, b) => (a.preco > b.preco ? a : b));
+    }
+
+    function prodMaisBarato(produtos) {
+      return produtos.reduce((a, b) => (a.preco < b.preco ? a : b));
+    }
+    carregarProdutos();
+  </script>
+</body>
+</html>
