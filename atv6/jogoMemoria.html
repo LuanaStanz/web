@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo da Memória</title>
+  <style>
+    table { border-collapse: collapse; margin: auto; }
+    td {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #999;
+      background-color: #ccc;
+      background-size: cover;
+      cursor: pointer;
+    }
+    .revelado {
+      background-color: #fff;
+    }
+    .acertou {
+      outline: 3px solid green;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center">Jogo da Memória</h1>
+  <table id="tabuleiro"></table>
+
+  <script>
+    const imagens = [
+      '🍎','🍌','🍇','🍓',
+      '🐶','🐱','🐼','🐵'
+    ];
+    let cartas = imagens.concat(imagens).sort(() => 0.5 - Math.random());
+    let selecionadas = [];
+    let bloqueio = false;
+
+    const tabuleiro = document.getElementById('tabuleiro');
+    let html = '<tbody>';
+    for (let i = 0; i < 4; i++) {
+      html += '<tr>';
+      for (let j = 0; j < 4; j++) {
+        const index = i * 4 + j;
+        html += `<td data-index="${index}"></td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</tbody>';
+    tabuleiro.innerHTML = html;
+
+    document.querySelectorAll('td').forEach(td => {
+      td.addEventListener('click', () => {
+        if (bloqueio || td.classList.contains('revelado')) return;
+
+        const index = td.getAttribute('data-index');
+        td.textContent = cartas[index];
+        td.classList.add('revelado');
+        selecionadas.push(td);
+
+        if (selecionadas.length === 2) {
+          bloqueio = true;
+          const [a, b] = selecionadas;
+          if (a.textContent === b.textContent) {
+            a.classList.add('acertou');
+            b.classList.add('acertou');
+            selecionadas = [];
+            bloqueio = false;
+          } else {
+            setTimeout(() => {
+              a.textContent = '';
+              b.textContent = '';
+              a.classList.remove('revelado');
+              b.classList.remove('revelado');
+              selecionadas = [];
+              bloqueio = false;
+            }, 1000);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
