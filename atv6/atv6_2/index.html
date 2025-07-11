@@ -1,0 +1,85 @@
+<!DOCTYPE html> 
+<html lang="pt-BR"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <title>Jogo da Memória</title>
+<style>
+  td {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #999;
+    background-color: #ccc;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+  }
+  .revelado {
+    background-color: #fff;
+  }
+</style>
+</head>
+<body>
+  <table id="tabuleiro"></table>
+  <script>
+    const imagens = [
+      'aula.jpg',
+      'equipement.jpeg',
+      'desenhocomunidade.jpeg',
+      'img1.jpg',
+      'img5.jpg',
+      'voleimedidas.jpeg',
+      'medidasTenis.jpeg',
+      'img8.jpg'
+    ];
+    
+    let cartas = imagens.concat(imagens).sort(() => 0.5 - Math.random());
+    let selecionadas = [];
+    let bloqueio = false;
+
+    const tabuleiro = document.getElementById('tabuleiro');
+    let html = '<tbody>';
+    for (let i = 0; i < 4; i++) {
+      html += '<tr>';
+      for (let j = 0; j < 4; j++) {
+        const index = i * 4 + j;
+        html += `<td data-index="${index}"></td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</tbody>';
+    tabuleiro.innerHTML = html;
+
+    document.querySelectorAll('td').forEach(td => {
+      td.addEventListener('click', () => {
+        if (bloqueio || td.classList.contains('revelado')) return;
+
+        const index = td.getAttribute('data-index');
+        td.style.backgroundImage = `url(${cartas[index]})`;
+        td.classList.add('revelado');
+        selecionadas.push(td);
+
+        if (selecionadas.length === 2) {
+          bloqueio = true;
+          const [a, b] = selecionadas;
+          const imgA = a.style.backgroundImage;
+          const imgB = b.style.backgroundImage;
+          if (imgA === imgB) {
+            // Sem classe 'acertou', já mantemos revelado
+            selecionadas = [];
+            bloqueio = false;
+          } else {
+            setTimeout(() => {
+              a.style.backgroundImage = '';
+              b.style.backgroundImage = '';
+              a.classList.remove('revelado');
+              b.classList.remove('revelado');
+              selecionadas = [];
+              bloqueio = false;
+            }, 1000);
+          }
+        }
+      });
+    });
+    </script>
+</body> 
+</html>

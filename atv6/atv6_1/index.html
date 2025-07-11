@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Produtos com Promise</title>
+  <style>
+    table{
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td{
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th{
+      background-color: #f0f0f0;
+    }
+    .acima-media{
+      background-color: red;
+      color: white;
+    }
+    .abaixo-media{
+      background-color: green;
+      color: white;
+    }
+    .caro{
+      font-weight: bold;
+      color: black;
+    }
+    .barato{
+      font-weight: bold;
+      color: black;
+    }
+    .erro {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Lista de Produtos</h1>
+    <div id="info"></div>
+    <div id="resultado">Carregando...</div>
+  </main>
+
+  <script>
+    function pegarProdutos(){
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const numero = Math.floor(Math.random() * 100);
+          console.log("Número sorteado:", numero);
+          if (numero % 2 === 0){
+            const produtos = Array.from({ length: 10 }, (_, i) => ({
+              id: i + 1,
+              nome: `Produto ${i + 1}`,
+              tipo: i % 2 === 0 ? 'Eletrônico' : 'Brinquedo',
+              preco: parseFloat((Math.random() * 100 + 50).toFixed(2))
+            }));
+            resolve(produtos);
+          } 
+          else{
+            reject({ RES: "ERROR", MSG: "ERRO NO SISTEMA" });
+          }
+        }, 4000);
+      });
+    }
+
+    async function carregarTabela() {
+      document.getElementById('resultado').innerHTML = 'Carregando...';
+      document.getElementById('info').innerHTML = '';
+
+      try {
+        const produtos = await pegarProdutos();
+        montarTabela(produtos);
+      } catch (erro) {
+        document.getElementById('resultado').innerHTML = `<p class="erro">${erro.MSG}</p>`;
+      }
+    }
+
+    //monta tabela e exibe no HTML
+    function montarTabela(produtos) {
+      const media = calcularMedia(produtos);
+      const maisCaro = encontrarMaisCaro(produtos);
+      const maisBarato = encontrarMaisBarato(produtos);
+
+      //explição da tabela
+      document.getElementById('info').innerHTML = `
+        <p>PS: produtos com preço acima da média têm cor vermelha e os abaixo têm cor verde.</p>
+        <p>O produto mais caro e o mais barato estão em <strong>negrito preto</strong>.</p>`;
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Preço (R$)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+      produtos.forEach(p => {
+        let classes = [];
+        if (p.preco > media) classes.push('acima-media');
+        if (p.preco < media) classes.push('abaixo-media');
+        if (p.id === maisCaro.id) classes.push('caro');
+        if (p.id === maisBarato.id) classes.push('barato');
+
+        html += `
+          <tr class="${classes.join(' ')}">
+            <td>${p.id}</td>
+            <td>${p.nome}</td>
+            <td>${p.tipo}</td>
+            <td>${p.preco.toFixed(2)}</td>
+          </tr>`;
+      });
+
+      html += `
+          </tbody>
+        </table>
+        <p><strong>Média dos preços:</strong> R$ ${media.toFixed(2)}</p>
+        <p><strong>Mais caro:</strong> ${maisCaro.nome} (R$ ${maisCaro.preco.toFixed(2)})</p>
+        <p><strong>Mais barato:</strong> ${maisBarato.nome} (R$ ${maisBarato.preco.toFixed(2)})</p>
+      `;
+
+      document.getElementById('resultado').innerHTML = html;
+    }
+
+    function calcularMedia(produtos){
+      const total = produtos.reduce((acc, p) => acc + p.preco, 0);
+      return total / produtos.length;
+    }
+
+    function encontrarMaisCaro(produtos){
+      return produtos.reduce((maior, atual) => atual.preco > maior.preco ? atual : maior);
+    }
+
+    function encontrarMaisBarato(produtos){
+      return produtos.reduce((menor, atual) => atual.preco < menor.preco ? atual : menor);
+    }
+
+    carregarTabela();
+  </script>
+</body>
+</html>
+
